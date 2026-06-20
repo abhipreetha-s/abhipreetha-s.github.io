@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhi Preetha S — Portfolio</title>
+<meta name="description" content="ECE & Data Science undergrad building AI systems across semiconductor manufacturing, electronics fault detection, and social impact.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A0D12;
+    --panel:#11151D;
+    --panel-2:#161B26;
+    --copper:#E2A65C;
+    --copper-dim:#8A6736;
+    --signal:#59E0C9;
+    --paper:#ECEAE2;
+    --mist:#828A9B;
+    --line:#222836;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; background:var(--ink); }
+
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  ::selection{ background:var(--copper); color:var(--ink); }
+
+  a{ color:inherit; text-decoration:none; }
+
+  section{ scroll-margin-top:84px; }
+
+  /* ---------- background grid + spotlight ---------- */
+  .circuit-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    opacity:0.35;
+    mask-image:radial-gradient(circle at 50% 0%, black, transparent 75%);
+    -webkit-mask-image:radial-gradient(circle at 50% 0%, black, transparent 75%);
+  }
+  .spotlight{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,20%), rgba(226,166,92,0.07), transparent 70%);
+    transition:background 0.1s ease-out;
+  }
+
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 28px; position:relative; z-index:1; }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(10,13,18,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1040px; margin:0 auto; padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-mark{
+    font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em;
+    color:var(--copper);
+  }
+  .nav-links{ display:flex; gap:28px; list-style:none; }
+  .nav-links a{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.1em;
+    color:var(--mist); text-transform:uppercase; transition:color 0.2s ease;
+    position:relative; padding-bottom:4px;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--signal); transition:width 0.25s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{ color:var(--paper); }
+  .nav-links a.active::after{ width:100%; }
+  .nav-toggle{ display:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh; display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px; padding-bottom:60px;
+  }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.18em;
+    color:var(--signal); text-transform:uppercase; margin-bottom:22px;
+    opacity:0; transform:translateY(8px); animation:rise 0.7s ease forwards 0.1s;
+  }
+  .hero h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(2.6rem, 7vw, 5.2rem); line-height:1.02; letter-spacing:-0.02em;
+    color:var(--paper);
+    opacity:0; transform:translateY(12px); animation:rise 0.8s ease forwards 0.25s;
+  }
+  .tagline{
+    font-size:clamp(1rem, 2vw, 1.2rem); color:var(--mist); max-width:560px;
+    margin-top:22px; font-weight:400;
+    opacity:0; transform:translateY(10px); animation:rise 0.8s ease forwards 0.45s;
+  }
+  .tagline strong{ color:var(--paper); font-weight:500; }
+
+  .waveform-wrap{
+    margin-top:48px; max-width:760px;
+    opacity:0; animation:fadein 1s ease forwards 0.6s;
+  }
+  .waveform{ width:100%; height:auto; display:block; overflow:visible; }
+  .waveform path{
+    fill:none; stroke:var(--signal); stroke-width:2.2;
+    stroke-linecap:round; stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(89,224,201,0.35));
+    stroke-dasharray:2200; stroke-dashoffset:2200;
+    animation:draw 2.6s cubic-bezier(.45,.05,.2,1) forwards 0.9s;
+  }
+  .waveform-caption{
+    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.1em;
+    color:var(--mist); text-transform:uppercase; margin-top:10px;
+    opacity:0; animation:fadein 0.8s ease forwards 2.4s;
+  }
+
+  .hero-links{
+    display:flex; flex-wrap:wrap; gap:14px; margin-top:46px;
+    opacity:0; animation:fadein 0.8s ease forwards 1.6s;
+  }
+  .pin{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.04em;
+    padding:11px 18px; border:1px solid var(--line); border-radius:3px;
+    color:var(--paper); transition:border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  }
+  .pin:hover{ border-color:var(--copper); background:var(--panel); transform:translateY(-2px); }
+  .pin .dot{ width:6px; height:6px; border-radius:50%; background:var(--copper); }
+
+  .scroll-cue{
+    position:absolute; left:50%; bottom:28px; transform:translateX(-50%);
+    font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em;
+    color:var(--mist); text-transform:uppercase; display:flex; flex-direction:column;
+    align-items:center; gap:8px; opacity:0; animation:fadein 0.8s ease forwards 2.2s;
+  }
+  .scroll-cue span{ width:1px; height:26px; background:var(--line); position:relative; overflow:hidden; }
+  .scroll-cue span::after{
+    content:''; position:absolute; top:-26px; left:0; width:100%; height:100%;
+    background:var(--signal); animation:trickle 1.8s ease-in-out infinite;
+  }
+
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes fadein{ to{ opacity:1; } }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes trickle{ 0%{ top:-26px; } 100%{ top:26px; } }
+
+  /* ---------- section heading ---------- */
+  .section-head{ margin-bottom:48px; }
+  .section-tag{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.18em;
+    color:var(--copper); text-transform:uppercase; display:block; margin-bottom:10px;
+  }
+  .section-head h2{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(1.6rem, 3.4vw, 2.3rem); letter-spacing:-0.01em;
+  }
+
+  .reveal{ opacity:0; transform:translateY(20px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* divider wave */
+  .divider{ width:100%; height:32px; opacity:0.5; margin:0 auto; }
+  .divider path{ fill:none; stroke:var(--line); stroke-width:1.5; }
+
+  /* ---------- about ---------- */
+  .about{ padding:110px 0 70px; }
+  .about-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:48px; align-items:start; }
+  .about-badge{
+    font-family:var(--font-mono); font-size:0.78rem; color:var(--mist);
+    border:1px solid var(--line); border-radius:4px; padding:18px;
+    background:var(--panel);
+  }
+  .about-badge div{ margin-bottom:8px; }
+  .about-badge div:last-child{ margin-bottom:0; }
+  .about-badge b{ color:var(--paper); font-weight:500; }
+  .about p{ color:var(--mist); font-size:1.02rem; max-width:560px; }
+  .about p + p{ margin-top:16px; }
+  .about strong{ color:var(--paper); font-weight:500; }
+
+  /* ---------- projects ---------- */
+  .projects{ padding:70px 0; }
+  .projects-intro{ color:var(--mist); max-width:560px; margin-bottom:8px; }
+  .projects-link{
+    font-family:var(--font-mono); font-size:0.75rem; color:var(--signal);
+    display:inline-block; margin-bottom:44px; border-bottom:1px solid transparent;
+    transition:border-color 0.2s ease;
+  }
+  .projects-link:hover{ border-color:var(--signal); }
+
+  .project-card{
+    border:1px solid var(--line); border-radius:6px; background:var(--panel);
+    padding:30px; margin-bottom:22px; transition:border-color 0.3s ease, transform 0.3s ease;
+  }
+  .project-card:hover{ border-color:var(--copper-dim); transform:translateY(-3px); }
+  .status-row{ display:flex; align-items:center; gap:9px; margin-bottom:16px; }
+  .led{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .led-active{ background:var(--signal); box-shadow:0 0 8px var(--signal); animation:pulse 2s infinite; }
+  .led-done{ background:var(--copper); box-shadow:0 0 8px var(--copper); }
+  .led-team{ background:var(--mist); }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
+  .status-text{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.08em;
+    color:var(--mist); text-transform:uppercase;
+  }
+  .project-card h3{
+    font-family:var(--font-display); font-size:1.5rem; font-weight:600; margin-bottom:6px;
+  }
+  .project-one-liner{ color:var(--copper); font-size:0.96rem; margin-bottom:14px; font-weight:500; }
+  .project-card p.desc{ color:var(--mist); font-size:0.96rem; max-width:680px; }
+  .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+  .tag{
+    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.05em;
+    color:var(--mist); border:1px solid var(--line); border-radius:20px;
+    padding:5px 12px; text-transform:uppercase; transition:all 0.2s ease;
+  }
+  .tag:hover{ border-color:var(--copper); color:var(--paper); }
+
+  /* ---------- achievements ---------- */
+  .achievements{ padding:70px 0; }
+  .ach-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:36px 48px; }
+  .ach-col h4{
+    font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.1em;
+    color:var(--paper); text-transform:uppercase; padding-bottom:10px;
+    border-bottom:1px solid var(--copper-dim); margin-bottom:16px;
+  }
+  .ach-col ul{ list-style:none; }
+  .ach-col li{
+    position:relative; padding-left:20px; margin-bottom:14px;
+    color:var(--mist); font-size:0.92rem; line-height:1.55;
+  }
+  .ach-col li::before{
+    content:''; position:absolute; left:0; top:0.62em; width:11px; height:1px; background:var(--copper);
+  }
+  .ach-col li b{ color:var(--paper); font-weight:500; }
+
+  /* ---------- skills ---------- */
+  .skills{ padding:70px 0; }
+  .skill-group{ margin-bottom:30px; }
+  .skill-group-label{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.1em;
+    color:var(--mist); text-transform:uppercase; margin-bottom:12px; display:block;
+  }
+  .pill-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pill{
+    font-family:var(--font-mono); font-size:0.78rem; color:var(--paper);
+    border:1px solid var(--line); border-radius:4px; padding:8px 14px;
+    background:var(--panel); transition:all 0.2s ease; cursor:default;
+  }
+  .pill:hover{ border-color:var(--signal); box-shadow:0 0 10px rgba(89,224,201,0.18); transform:translateY(-2px); }
+
+  .lang-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:22px; margin-top:14px; }
+  .lang-row{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .lang-name{ font-family:var(--font-mono); font-size:0.8rem; color:var(--paper); }
+  .bars{ display:flex; gap:3px; }
+  .bar{ width:6px; height:14px; background:var(--line); border-radius:1px; transform:scaleY(0); transform-origin:bottom; transition:transform 0.5s ease, background 0.5s ease; }
+  .bar.filled{ background:var(--signal); }
+  .lang-row.in-view .bar{ transform:scaleY(1); }
+  .bar:nth-child(1){ transition-delay:0.05s; } .bar:nth-child(2){ transition-delay:0.12s; }
+  .bar:nth-child(3){ transition-delay:0.19s; } .bar:nth-child(4){ transition-delay:0.26s; } .bar:nth-child(5){ transition-delay:0.33s; }
+
+  /* ---------- education ---------- */
+  .education{ padding:70px 0; }
+  .edu-card{
+    border:1px solid var(--line); border-radius:6px; background:var(--panel);
+    padding:26px 30px; margin-bottom:16px; display:flex; justify-content:space-between;
+    align-items:flex-start; gap:20px; flex-wrap:wrap;
+  }
+  .edu-card h3{ font-family:var(--font-display); font-size:1.15rem; font-weight:600; }
+  .edu-card .degree{ color:var(--mist); font-size:0.9rem; margin-top:4px; }
+  .edu-card .dual{ color:var(--copper); font-size:0.82rem; margin-top:8px; font-family:var(--font-mono); }
+  .edu-meta{ text-align:right; font-family:var(--font-mono); font-size:0.78rem; color:var(--mist); white-space:nowrap; }
+  .edu-meta b{ color:var(--signal); display:block; font-size:0.9rem; margin-top:4px; }
+  .edu-footnote{ font-size:0.85rem; color:var(--mist); margin-top:18px; font-family:var(--font-mono); }
+
+  /* ---------- contact / footer ---------- */
+  .contact{ padding:100px 0 50px; }
+  .contact h2{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(1.8rem, 4.4vw, 2.8rem); margin-bottom:44px; letter-spacing:-0.01em;
+  }
+  .contact-links{ border-top:1px solid var(--line); }
+  .contact-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 4px; border-bottom:1px solid var(--line);
+    transition:padding-left 0.25s ease;
+  }
+  .contact-row:hover{ padding-left:12px; }
+  .contact-row .label{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.12em;
+    color:var(--mist); text-transform:uppercase; width:120px; flex-shrink:0;
+  }
+  .contact-row .value{ font-family:var(--font-display); font-size:1.15rem; flex:1; }
+  .contact-row .arrow{ font-family:var(--font-mono); color:var(--copper); transition:transform 0.25s ease; }
+  .contact-row:hover .arrow{ transform:translateX(6px); }
+  .contact-row:hover .value{ color:var(--copper); }
+
+  .footer-note{
+    margin-top:60px; font-family:var(--font-mono); font-size:0.7rem;
+    color:var(--mist); text-align:center; letter-spacing:0.05em;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    .nav-links{ display:none; }
+    .about-grid{ grid-template-columns:1fr; }
+    .ach-grid{ grid-template-columns:1fr; }
+    .edu-card{ flex-direction:column; }
+    .edu-meta{ text-align:left; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .eyebrow, .hero h1, .tagline, .waveform-wrap, .waveform-caption, .hero-links, .scroll-cue{ opacity:1; transform:none; }
+    .waveform path{ stroke-dashoffset:0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="circuit-bg"></div>
+<div class="spotlight" id="spotlight"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-mark">A·P·S</div>
+    <ul class="nav-links">
+      <li><a href="#about" data-nav>About</a></li>
+      <li><a href="#projects" data-nav>Builds</a></li>
+      <li><a href="#achievements" data-nav>Track Record</a></li>
+      <li><a href="#skills" data-nav>Toolkit</a></li>
+      <li><a href="#contact" data-nav>Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">ECE × Data Science — PSG College of Technology</p>
+    <h1>Abhi Preetha S</h1>
+    <p class="tagline">I build AI systems for the problems hiding in scattered, messy, easy-to-ignore data — <strong>fading expert knowledge on a fab floor</strong>, <strong>early drift in an electronic signal</strong>, and <strong>a paper survey from a village no app reaches</strong>.</p>
+
+    <div class="waveform-wrap">
+      <svg class="waveform" viewBox="0 0 900 120" preserveAspectRatio="none">
+        <path d="M0,60 L20,52 L35,68 L50,45 L65,71 L80,48 L95,66 L110,44 L125,70 L140,50 L155,65 L170,46 L185,72 L200,50 L215,64 L230,48 L245,68 L260,53 L275,62 L290,57 L300,60 C325,20 350,20 375,60 C400,100 425,100 450,60 C475,20 500,20 525,60 C550,100 575,100 600,60 C625,20 650,20 675,60 C700,100 725,100 750,60 C775,20 800,20 825,60 C850,100 875,100 900,60" />
+      </svg>
+      <p class="waveform-caption">// noise in, signal out</p>
+    </div>
+
+    <div class="hero-links">
+      <a class="pin" href="mailto:preethasabhi@gmail.com"><span class="dot"></span>Email</a>
+      <a class="pin" href="https://github.com/abhipreetha-s" target="_blank" rel="noopener"><span class="dot"></span>GitHub</a>
+      <a class="pin" href="https://www.linkedin.com/in/abhi-preetha-subramaniyan-a75008299" target="_blank" rel="noopener"><span class="dot"></span>LinkedIn</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span></span>Scroll</div>
+</header>
+
+<main class="wrap">
+
+  <section class="about reveal" id="about">
+    <div class="section-head">
+      <span class="section-tag">// About</span>
+      <h2>Two degrees, one direction</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-badge">
+        <div><b>Based in</b> — Coimbatore, Tamil Nadu</div>
+        <div><b>Studying</b> — B.E. Electronics & Communication Engineering</div>
+        <div><b>Also reading</b> — B.S. Data Science, IIT Madras</div>
+        <div><b>Class of</b> — 2029</div>
+      </div>
+      <div>
+        <p>I'm an undergraduate at <strong>PSG College of Technology</strong>, dual-enrolled in <strong>IIT Madras's</strong> Data Science programme — which mostly means I spend my time moving between circuits and code, trying to get them to talk to each other.</p>
+        <p>Most of what I build starts from the same question: what happens to the information that falls through the cracks — the engineer's intuition no system records, the fault that hasn't announced itself yet, the household an app will never reach? I've explored that question through AI-powered knowledge systems, early-stage fault detection, and a quantum computing workshop or two on the side.</p>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 900 32" preserveAspectRatio="none"><path d="M0,16 C50,2 100,2 150,16 C200,30 250,30 300,16 C350,2 400,2 450,16 C500,30 550,30 600,16 C650,2 700,2 750,16 C800,30 850,30 900,16"/></svg>
+
+  <section class="projects reveal" id="projects">
+    <div class="section-head">
+      <span class="section-tag">// Selected Work</span>
+      <h2>Things I've shipped or pitched</h2>
+    </div>
+    <p class="projects-intro">Three builds, three different kinds of "missing signal."</p>
+    <a class="projects-link" href="https://github.com/abhipreetha-s" target="_blank" rel="noopener">Full commit history → github.com/abhipreetha-s</a>
+
+    <div class="project-card">
+      <div class="status-row"><span class="led led-active"></span><span class="status-text">Round 2 — AIC PI Hub × Naari Shakthi Hackathon</span></div>
+      <h3>FAB IQ</h3>
+      <p class="project-one-liner">Preserving semiconductor manufacturing intelligence before it walks out the door.</p>
+      <p class="desc">When senior fab engineers leave, their troubleshooting instinct usually leaves with them — most manufacturing systems track machines and metrics, not the reasoning behind a fix. FAB IQ converts troubleshooting reports, maintenance logs, and incident records into a searchable knowledge graph, so the next time a similar issue surfaces, it surfaces the past case, the likely root cause, and what actually worked — aimed at India's growing semiconductor ecosystem.</p>
+      <div class="tags"><span class="tag">AI / Knowledge Graphs</span><span class="tag">Semiconductor Mfg</span><span class="tag">Enterprise SaaS</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-row"><span class="led led-done"></span><span class="status-text">Prototype completed — Certified, AMD Lemonade Developer Challenge</span></div>
+      <h3>VoltSpectra</h3>
+      <p class="project-one-liner">Catching an electronic fault while it's still a whisper, not a failure.</p>
+      <p class="desc">Most electronic failures don't happen instantly — they begin as small drifts in voltage, current, or signal behaviour that go unnoticed until something actually breaks. VoltSpectra is an exploratory fault-analysis tool built to flag those early deviations before they become downtime, aimed at industrial automation, power electronics, and IoT systems.</p>
+      <div class="tags"><span class="tag">Lemonade LLM</span><span class="tag">Gemma</span><span class="tag">Python</span><span class="tag">JSON</span><span class="tag">Predictive Maintenance</span></div>
+    </div>
+
+    <div class="project-card">
+      <div class="status-row"><span class="led led-team"></span><span class="status-text">Team build — Google Solution Challenge (not yet deployed)</span></div>
+      <h3>CommunityPulse</h3>
+      <p class="project-one-liner">Closing the gap between a community's need and a volunteer actually showing up.</p>
+      <p class="desc">NGOs in Tamil Nadu often run on paper surveys and phone chains — urgent needs get missed, and rural citizens without smartphones go unheard entirely. CommunityPulse digitises field reports, scores urgency with AI, and auto-matches volunteers to tasks, with Seva Maiyam kiosk and Tamil IVR support so reporting never requires literacy or a smartphone.</p>
+      <div class="tags"><span class="tag">AI Matching</span><span class="tag">Social Impact</span><span class="tag">Tamil Nadu NGOs</span><span class="tag">Team Project</span></div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 900 32" preserveAspectRatio="none"><path d="M0,16 C50,2 100,2 150,16 C200,30 250,30 300,16 C350,2 400,2 450,16 C500,30 550,30 600,16 C650,2 700,2 750,16 C800,30 850,30 900,16"/></svg>
+
+  <section class="achievements reveal" id="achievements">
+    <div class="section-head">
+      <span class="section-tag">// Track Record</span>
+      <h2>Outside the build queue</h2>
+    </div>
+    <div class="ach-grid">
+      <div class="ach-col">
+        <h4>Competitions</h4>
+        <ul>
+          <li><b>Microsoft Imagine Cup 2021</b> — selected for the India championship, mentored by industry experts.</li>
+          <li><b>AIC PI Hub — Naari Shakthi Hackathon</b> — FAB IQ advanced to Round 2.</li>
+          <li><b>AMD Lemonade Developer Challenge</b> — certified for the VoltSpectra prototype.</li>
+        </ul>
+      </div>
+      <div class="ach-col">
+        <h4>Recognitions</h4>
+        <ul>
+          <li>Contributed an article to the <b>Neuro Engineering newsletter</b>, IEEE EMBS (BMEA Student Chapter).</li>
+          <li><b>Top 10 rank</b>, Mathematics Olympiad, PSG College of Technology.</li>
+        </ul>
+      </div>
+      <div class="ach-col">
+        <h4>Learning & Exploration</h4>
+        <ul>
+          <li>Introduction to ML workshop at <b>IIT Palakkad</b>.</li>
+          <li><b>IBM</b> quantum computing workshop using Qiskit, Qiskit Fall Fest PNC 2025.</li>
+          <li>Citizen scientist on an <b>asteroid search campaign</b> with Hex Star Universe × IASC, working with Astrometrica.</li>
+        </ul>
+      </div>
+      <div class="ach-col">
+        <h4>Community</h4>
+        <ul>
+          <li>Office Bearer, <b>ECEA</b>, PSG College of Technology.</li>
+          <li>Member, <b>Entrepreneurs Club (Thirst-E)</b>.</li>
+          <li>Active volunteer, <b>NSS Club</b>.</li>
+          <li>Member, <b>Tamizh Mandram</b>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 900 32" preserveAspectRatio="none"><path d="M0,16 C50,2 100,2 150,16 C200,30 250,30 300,16 C350,2 400,2 450,16 C500,30 550,30 600,16 C650,2 700,2 750,16 C800,30 850,30 900,16"/></svg>
+
+  <section class="skills reveal" id="skills">
+    <div class="section-head">
+      <span class="section-tag">// Toolkit</span>
+      <h2>What I build with</h2>
+    </div>
+
+    <div class="skill-group">
+      <span class="skill-group-label">Core & Languages</span>
+      <div class="pill-row">
+        <span class="pill">C</span><span class="pill">C++</span><span class="pill">Python</span>
+        <span class="pill">HTML</span><span class="pill">OOP</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">Data & ML</span>
+      <div class="pill-row">
+        <span class="pill">Data Analysis</span><span class="pill">Statistics</span><span class="pill">Matplotlib</span>
+        <span class="pill">Google Colab</span><span class="pill">Lemonade (LLM)</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <span class="skill-group-label">Tools & Other</span>
+      <div class="pill-row">
+        <span class="pill">Git</span><span class="pill">VS Code</span><span class="pill">Qiskit</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <span class="skill-group-label">Spoken</span>
+      <div class="lang-grid">
+        <div class="lang-row"><span class="lang-name">Tamil</span><div class="bars"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div></div></div>
+        <div class="lang-row"><span class="lang-name">Telugu</span><div class="bars"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div></div></div>
+        <div class="lang-row"><span class="lang-name">English</span><div class="bars"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div></div></div>
+        <div class="lang-row"><span class="lang-name">Hindi</span><div class="bars"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div><div class="bar"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 900 32" preserveAspectRatio="none"><path d="M0,16 C50,2 100,2 150,16 C200,30 250,30 300,16 C350,2 400,2 450,16 C500,30 550,30 600,16 C650,2 700,2 750,16 C800,30 850,30 900,16"/></svg>
+
+  <section class="education reveal" id="education">
+    <div class="section-head">
+      <span class="section-tag">// Education</span>
+      <h2>Where this is all happening</h2>
+    </div>
+    <div class="edu-card">
+      <div>
+        <h3>PSG College of Technology, Coimbatore</h3>
+        <div class="degree">B.E. Electronics & Communication Engineering</div>
+        <div class="dual">+ B.S. Data Science — IIT Madras (dual degree)</div>
+      </div>
+      <div class="edu-meta">2025 — 2029<b>CGPA 8.79</b></div>
+    </div>
+    <p class="edu-footnote">Prior: Saratha Matric Hr. Sec. School — Class XII 99.5% (2023–25) · Class X 98.2% (2021–23)</p>
+  </section>
+
+</main>
+
+<footer class="contact reveal" id="contact">
+  <div class="wrap">
+    <h2>Building something? Let's talk.</h2>
+    <div class="contact-links">
+      <a class="contact-row" href="mailto:preethasabhi@gmail.com">
+        <span class="label">Mail</span><span class="value">preethasabhi@gmail.com</span><span class="arrow">→</span>
+      </a>
+      <a class="contact-row" href="https://github.com/abhipreetha-s" target="_blank" rel="noopener">
+        <span class="label">GitHub</span><span class="value">github.com/abhipreetha-s</span><span class="arrow">→</span>
+      </a>
+      <a class="contact-row" href="https://www.linkedin.com/in/abhi-preetha-subramaniyan-a75008299" target="_blank" rel="noopener">
+        <span class="label">LinkedIn</span><span class="value">abhi-preetha-subramaniyan</span><span class="arrow">→</span>
+      </a>
+    </div>
+    <p class="footer-note">Built by Abhi Preetha S · Coimbatore, Tamil Nadu</p>
+  </div>
+</footer>
+
+<script>
+  // spotlight follows cursor
+  const spotlight = document.getElementById('spotlight');
+  window.addEventListener('mousemove', (e) => {
+    spotlight.style.setProperty('--mx', e.clientX + 'px');
+    spotlight.style.setProperty('--my', e.clientY + 'px');
+    spotlight.style.background = `radial-gradient(420px circle at ${e.clientX}px ${e.clientY}px, rgba(226,166,92,0.07), transparent 70%)`;
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal, .lang-row');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // nav active link highlighting
+  const sections = document.querySelectorAll('main section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '-80px 0px -50% 0px' });
+  sections.forEach(s => navIO.observe(s));
+</script>
+
+</body>
+</html>
